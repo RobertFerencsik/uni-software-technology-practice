@@ -23,8 +23,9 @@ Download and install [python install manager][p-install-m]
 
 Make a python virtual environment in the root of the project, so you don't install packages globally. Usefull so there is no library version conflicts between your projects. Also you can then freeze your environment making it reproducible after you installed your packages.
 
-- `python -n venv .venv`                create the environment
-- `venv\Scripts\activate`               activate on windows
+- `python -m venv .venv`                create the environment
+- `.venv\Scripts\activate`               activate on windows
+- `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` give permission to run scripts (in powershell)
 - `deactivate`
 - `pip freeze > requirements.txt`       save the libraries and their versions into the req file
 - `pip install -r requirements.txt`     download and install the libs with the version specified in the req file
