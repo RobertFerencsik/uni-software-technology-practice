@@ -20,3 +20,11 @@ The project was made in Python with the use of the Pygame library.
 
 ## Intalling the game
 
+## Screenshots
+
+## Authors
+- Krusó Panna
+- Gyöngyösi Dóra Imola
+- Csáki Gergely
+- Ferencsik Róbert
+- Marót Máté
