@@ -69,3 +69,12 @@ you can set aliases for git commands. If you write the alias the defined code ru
 [p-install-m]: https://www.python.org/downloads/
 [git]: https://git-scm.com/install/windows
 [n++]: https://notepad-plus-plus.org/downloads/
+
+### Git Branching
+
+### Useful Git Workflows
+
+Get remote branch to local
+git fetch
+git branch -a
+git checkout --track origin/branch-name
