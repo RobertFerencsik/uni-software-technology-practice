@@ -30,6 +30,12 @@ Make a python virtual environment in the root of the project, so you don't insta
 - `pip freeze > requirements.txt`       save the libraries and their versions into the req file
 - `pip install -r requirements.txt`     download and install the libs with the version specified in the req file
 
+Create virtual environment with specific python version (PowerShell)
+```
+py -0                           # list python versions
+py -3.12 -m venv .venv          # or use an other python version
+```
+
 ## git 
 
 Download and install [git][git].
