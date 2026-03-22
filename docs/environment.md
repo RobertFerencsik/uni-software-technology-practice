@@ -75,6 +75,9 @@ you can set aliases for git commands. If you write the alias the defined code ru
 ### Useful Git Workflows
 
 Get remote branch to local
+
 git fetch
+
 git branch -a
+
 git checkout --track origin/branch-name
