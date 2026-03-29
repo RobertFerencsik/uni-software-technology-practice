@@ -1,6 +1,6 @@
 import random
 
-from environment.mapLayouts import map1, map2, map3
+from mapLayouts import map1, map2, map3
 
 class MapLoader:
     def __init__(self):
@@ -14,4 +14,4 @@ class MapLoader:
     def load_random_map(self):
         chosen = random.choice(self.maps)
 
-        return chosen
+        return chosen()
