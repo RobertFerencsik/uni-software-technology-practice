@@ -11,6 +11,7 @@ class TestMath:
     def test_add_2_nums(self,a, b, expected):
         name = Math(a, b)
         assert name.add_2_nums(a, b) == expected
+        assert False
         
 
 
