@@ -4,6 +4,10 @@ on:
   pull_request:
     branches:
       - dev           # runs CI for PRs targeting dev
+  push:
+    branches:
+      - dev
+
 
 jobs:
   test:
