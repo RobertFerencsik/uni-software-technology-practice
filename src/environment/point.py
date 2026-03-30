@@ -1,5 +1,5 @@
 # egy koordinátát jelző osztály
-# (x,y) pozíció a páylán
+# (x,y) pozíció a pályán
 
 class Point:
     def __init__(self, x: int, y: int):
