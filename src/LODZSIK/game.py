@@ -1,5 +1,5 @@
-from game.snake import Snake
-from game.point import Point
+from snake import Snake
+from point import Point
 
 from environment.board import Board
 from environment.food import Food

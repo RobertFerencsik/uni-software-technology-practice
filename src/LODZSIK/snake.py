@@ -1,5 +1,5 @@
-from game.point import Point
-from game.direction import Direction
+from point import Point
+from direction import Direction
 
 
 class Snake:
