@@ -3,7 +3,7 @@ from point import Point
 
 from environment.board import Board
 from environment.food import Food
-from environment.map_loader import MapLoader
+from environment.maploader import MapLoader
 
 
 class Game:
