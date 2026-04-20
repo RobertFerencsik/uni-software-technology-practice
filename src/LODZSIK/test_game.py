@@ -1,4 +1,4 @@
-from game.game import Game
+from game import Game
 
 
 def test_game_starts_not_over():
