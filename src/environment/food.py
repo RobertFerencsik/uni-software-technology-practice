@@ -16,3 +16,4 @@ class Food:
 
             if board.grid[y][x] == Tile.EMPTY.value and (x, y) not in snake_body:
                 self.position = (x, y)
+                return self.position
