@@ -1,4 +1,4 @@
-from tile import Tile
+from environment.tile import Tile
 
 class Board:
     def __init__(self, grid):

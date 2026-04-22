@@ -1,6 +1,6 @@
 import random
 
-from mapLayouts import map1, map2, map3
+from environment.mapLayouts import map1, map2, map3
 
 class MapLoader:
     def __init__(self):

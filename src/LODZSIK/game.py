@@ -1,9 +1,13 @@
-from snake import Snake
-from point import Point
-
+from LODZSIK.point import Point
+from LODZSIK.snake import Snake
 from environment.board import Board
 from environment.food import Food
 from environment.map_loader import MapLoader
+
+
+def _body_as_tuples(body):
+    """Board and Food.spawn expect (x, y) tuples; LODZSIK snake uses Point."""
+    return [(p.x, p.y) for p in body]
 
 
 class Game:
@@ -27,7 +31,7 @@ class Game:
         - snake elhelyezése
         """
         self.spawn_food()
-        self.board.place_snake(self.snake.body)
+        self.board.place_snake(_body_as_tuples(self.snake.body))
 
     def spawn_food(self):
         """
@@ -35,7 +39,7 @@ class Game:
         """
         food_position = self.food.spawn(
             self.board,
-            self.snake.body
+            _body_as_tuples(self.snake.body),
         )
 
         self.board.place_food(food_position)
@@ -52,7 +56,7 @@ class Game:
         if self.game_over:
             return
 
-        self.board.clear_snake(self.snake.body)
+        self.board.clear_snake(_body_as_tuples(self.snake.body))
 
         self.snake.move()
 
@@ -63,7 +67,7 @@ class Game:
 
         self.check_food()
 
-        self.board.place_snake(self.snake.body)
+        self.board.place_snake(_body_as_tuples(self.snake.body))
 
     def check_collisions(self):
         """
@@ -86,7 +90,7 @@ class Game:
         - régi food törlés
         - új food spawn
         """
-        if self.snake.head == self.food.position:
+        if (self.snake.head.x, self.snake.head.y) == self.food.position:
             self.snake.grow()
             self.score += 1
 

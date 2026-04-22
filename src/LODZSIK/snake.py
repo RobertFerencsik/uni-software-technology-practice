@@ -1,5 +1,5 @@
-from point import Point
-from direction import Direction
+from LODZSIK.point import Point
+from LODZSIK.direction import Direction
 
 
 class Snake:
