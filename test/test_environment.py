@@ -1,11 +1,8 @@
-from pathlib import Path
-import sys
-
-from board import Board
-from food import Food
-from mapLoader import MapLoader
-from point import Point
-from tile import Tile
+from environment.board import Board
+from environment.food import Food
+from environment.map_loader import MapLoader
+from environment.point import Point
+from environment.tile import Tile
 
 
 def test_tile_values():
@@ -93,7 +90,9 @@ def test_food_spawn_sets_position(monkeypatch):
 
     # First: (0,0) blocked by snake, second: (1,0) wall, third: (1,1) valid
     values = iter([0, 0, 1, 0, 1, 1])
-    monkeypatch.setattr("food.random.randint", lambda a, b: next(values))
+    monkeypatch.setattr(
+        "environment.food.random.randint", lambda a, b: next(values)
+    )
 
     f = Food()
     f.spawn(board, snake_body=[(0, 0)])
@@ -114,7 +113,9 @@ def test_maploader_load_random_map(monkeypatch):
     def fake_generate():
         return expected
 
-    monkeypatch.setattr("mapLoader.random.choice", lambda seq: fake_generate)
+    monkeypatch.setattr(
+        "environment.map_loader.random.choice", lambda seq: fake_generate
+    )
 
     result = loader.load_random_map()
     assert result == expected
