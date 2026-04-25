@@ -12,8 +12,16 @@ class Snake:
     def head(self):
         return self.body[0]
 
-    def change_direction(self, new_direction):
-        # később tiltani lehet a visszafordulást
+    _OPPOSITE = {
+        Direction.UP: Direction.DOWN,
+        Direction.DOWN: Direction.UP,
+        Direction.LEFT: Direction.RIGHT,
+        Direction.RIGHT: Direction.LEFT,
+    }
+
+    def change_direction(self, new_direction: Direction) -> None:
+        if new_direction == self._OPPOSITE.get(self.direction):
+            return
         self.direction = new_direction
 
     def move(self):

@@ -21,6 +21,7 @@ class Game:
 
         self.score = 0
         self.game_over = False
+        self.paused = False
 
         self._setup_game()
 
@@ -44,6 +45,10 @@ class Game:
 
         self.board.place_food(food_position)
 
+    def toggle_pause(self) -> None:
+        if not self.game_over:
+            self.paused = not self.paused
+
     def update(self):
         """
         Egy game tick:
@@ -53,7 +58,7 @@ class Game:
         - food check
         - snake kirajzolás
         """
-        if self.game_over:
+        if self.game_over or self.paused:
             return
 
         self.board.clear_snake(_body_as_tuples(self.snake.body))
