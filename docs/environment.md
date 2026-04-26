@@ -30,6 +30,12 @@ Make a python virtual environment in the root of the project, so you don't insta
 - `pip freeze > requirements.txt`       save the libraries and their versions into the req file
 - `pip install -r requirements.txt`     download and install the libs with the version specified in the req file
 
+Create virtual environment with specific python version (PowerShell)
+```
+py -0                           # list python versions
+py -3.12 -m venv .venv          # or use an other python version
+```
+
 ## git 
 
 Download and install [git][git].
@@ -63,3 +69,15 @@ you can set aliases for git commands. If you write the alias the defined code ru
 [p-install-m]: https://www.python.org/downloads/
 [git]: https://git-scm.com/install/windows
 [n++]: https://notepad-plus-plus.org/downloads/
+
+### Git Branching
+
+### Useful Git Workflows
+
+Get remote branch to local
+
+git fetch
+
+git branch -a
+
+git checkout --track origin/branch-name
