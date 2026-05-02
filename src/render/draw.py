@@ -8,6 +8,7 @@ from environment.constants import (
     BACKGROUND_COLOR,
     CELL_SIZE,
     FOOD_COLOR,
+    POWERUP_COLOR,
     SNAKE_COLOR,
     WALL_COLOR,
 )
@@ -39,6 +40,8 @@ def draw(
                 color = SNAKE_COLOR
             elif food_position is not None and (x, y) == food_position:
                 color = FOOD_COLOR
+            elif board.grid[y][x] == Tile.POWERUP.value:
+                color = POWERUP_COLOR
             elif board.grid[y][x] == Tile.WALL.value:
                 color = WALL_COLOR
             else:

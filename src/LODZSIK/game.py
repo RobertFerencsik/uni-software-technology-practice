@@ -1,8 +1,10 @@
 from LODZSIK.point import Point
 from LODZSIK.snake import Snake
 from environment.board import Board
+from environment.constants import MAX_ACTIVE_POWERUPS, POWERUP_SPAWN_INTERVAL_TICKS
 from environment.food import Food
 from environment.map_loader import MapLoader
+from environment.powerup import Powerup
 
 
 def _body_as_tuples(body):
@@ -18,6 +20,8 @@ class Game:
         self.board = Board(self.grid)
         self.snake = Snake(start_position=Point(5, 5))
         self.food = Food()
+        self.powerups: list[Powerup] = []
+        self._powerup_spawn_timer = 0
 
         self.score = 0
         self.game_over = False
@@ -45,6 +49,21 @@ class Game:
 
         self.board.place_food(food_position)
 
+    def try_spawn_powerup(self):
+        if len(self.powerups) >= MAX_ACTIVE_POWERUPS:
+            return
+        pup = Powerup()
+        position = pup.spawn(self.board, _body_as_tuples(self.snake.body))
+        self.board.place_powerup(position)
+        self.powerups.append(pup)
+
+    def _tick_powerup_spawner(self):
+        self._powerup_spawn_timer += 1
+        if self._powerup_spawn_timer < POWERUP_SPAWN_INTERVAL_TICKS:
+            return
+        self._powerup_spawn_timer = 0
+        self.try_spawn_powerup()
+
     def toggle_pause(self) -> None:
         if not self.game_over:
             self.paused = not self.paused
@@ -71,6 +90,10 @@ class Game:
             return
 
         self.check_food()
+
+        self.check_powerups()
+
+        self._tick_powerup_spawner()
 
         self.board.place_snake(_body_as_tuples(self.snake.body))
 
@@ -101,6 +124,17 @@ class Game:
 
             self.board.clear_food(self.food.position)
             self.spawn_food()
+
+    def check_powerups(self):
+        """Fej rálépés: eltüntetjük a powerupot; effekt egyelőre nincs."""
+        head = (self.snake.head.x, self.snake.head.y)
+        remaining: list[Powerup] = []
+        for pup in self.powerups:
+            if pup.position == head:
+                self.board.clear_powerup(pup.position)
+                continue
+            remaining.append(pup)
+        self.powerups = remaining
 
     def restart(self):
         """

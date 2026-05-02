@@ -31,6 +31,14 @@ class Board:
     def clear_food(self, position):
         x, y = position
         self.grid[y][x] = Tile.EMPTY.value
+        
+    def place_powerup(self, position):
+        x, y = position
+        self.grid[y][x] = Tile.POWERUP.value
+
+    def clear_powerup(self, position):
+        x, y = position
+        self.grid[y][x] = Tile.EMPTY.value
 
     def place_snake(self, snake_body):
         for x, y in snake_body:
