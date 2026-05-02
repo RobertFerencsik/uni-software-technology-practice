@@ -19,6 +19,11 @@ RENDER_FPS = 60
 MAX_LOGIC_STEPS_PER_FRAME = 5
 
 
+def _logic_step_multiplier(game: Game) -> float:
+    fn = getattr(game, "logic_step_multiplier", None)
+    return float(fn()) if callable(fn) else 1.0
+
+
 def _window_size(game: Game) -> tuple[int, int]:
     return (
         game.board.width * CELL_SIZE,
@@ -66,7 +71,7 @@ def main():
     game = Game()
     running = True
     logic_accum = 0.0
-    logic_step_s = 1.0 / LOGIC_FPS
+    base_logic_step_s = 1.0 / LOGIC_FPS
 
     while running:
         for event in pygame.event.get():
@@ -78,6 +83,7 @@ def main():
 
         dt = clock.tick(RENDER_FPS) / 1000.0
         logic_accum += dt
+        logic_step_s = base_logic_step_s * _logic_step_multiplier(game)
         steps = 0
         while (
             steps < MAX_LOGIC_STEPS_PER_FRAME
@@ -97,6 +103,7 @@ def main():
             game.board,
             [(p.x, p.y) for p in game.snake.body],
             game.food.position,
+            getattr(game, "powerups", ()),
         )
         pygame.display.flip()
     pygame.quit()
@@ -104,3 +111,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

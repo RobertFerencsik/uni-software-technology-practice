@@ -1,12 +1,17 @@
 import random
+from enum import Enum
 
 from environment.tile import Tile
 
 
-class Powerup:
-    """Játék powerup példány; üres tartalom — később bővíthető effektekkel."""
+class PowerupKind(Enum):
+    SHORTEN = "shorten"
+    SLOW = "slow"
 
-    def __init__(self):
+
+class Powerup:
+    def __init__(self, kind: PowerupKind):
+        self.kind = kind
         self.position = None
 
     def spawn(self, board, snake_body):

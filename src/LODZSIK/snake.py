@@ -42,5 +42,13 @@ class Snake:
     def grow(self):
         self._grow_pending = True
 
+    def shorten_by_ratio(self, ratio: float) -> None:
+        """A farok felől levágja a testet: a hossz ratio hányadával csökken (0..1)."""
+        n = len(self.body)
+        if n <= 1:
+            return
+        keep = max(1, int(n * (1.0 - ratio)))
+        self.body = self.body[:keep]
+
     def collides_with_self(self):
         return self.head in self.body[1:]

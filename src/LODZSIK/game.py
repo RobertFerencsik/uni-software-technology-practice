@@ -1,10 +1,18 @@
+import random
+import time
+
 from LODZSIK.point import Point
 from LODZSIK.snake import Snake
 from environment.board import Board
-from environment.constants import MAX_ACTIVE_POWERUPS, POWERUP_SPAWN_INTERVAL_TICKS
+from environment.constants import (
+    MAX_ACTIVE_POWERUPS,
+    POWERUP_SHRINK_RATIO,
+    POWERUP_SLOW_DURATION_S,
+    POWERUP_SPAWN_INTERVAL_TICKS,
+)
 from environment.food import Food
 from environment.map_loader import MapLoader
-from environment.powerup import Powerup
+from environment.powerup import Powerup, PowerupKind
 
 
 def _body_as_tuples(body):
@@ -22,6 +30,7 @@ class Game:
         self.food = Food()
         self.powerups: list[Powerup] = []
         self._powerup_spawn_timer = 0
+        self._slow_until_monotonic: float | None = None
 
         self.score = 0
         self.game_over = False
@@ -52,7 +61,8 @@ class Game:
     def try_spawn_powerup(self):
         if len(self.powerups) >= MAX_ACTIVE_POWERUPS:
             return
-        pup = Powerup()
+        kind = random.choice(list(PowerupKind))
+        pup = Powerup(kind=kind)
         position = pup.spawn(self.board, _body_as_tuples(self.snake.body))
         self.board.place_powerup(position)
         self.powerups.append(pup)
@@ -67,6 +77,17 @@ class Game:
     def toggle_pause(self) -> None:
         if not self.game_over:
             self.paused = not self.paused
+
+    def logic_step_multiplier(self) -> float:
+        """
+        Szorzó a main loop lépésidejére. >1 = lassabb logika (ritkább tick).
+        """
+        if self._slow_until_monotonic is None:
+            return 1.0
+        if time.monotonic() >= self._slow_until_monotonic:
+            self._slow_until_monotonic = None
+            return 1.0
+        return 2.0
 
     def update(self):
         """
@@ -126,12 +147,18 @@ class Game:
             self.spawn_food()
 
     def check_powerups(self):
-        """Fej rálépés: eltüntetjük a powerupot; effekt egyelőre nincs."""
+        """Fej rálépés: powerup törlése + hatás alkalmazása."""
         head = (self.snake.head.x, self.snake.head.y)
         remaining: list[Powerup] = []
         for pup in self.powerups:
             if pup.position == head:
                 self.board.clear_powerup(pup.position)
+                if pup.kind is PowerupKind.SHORTEN:
+                    self.snake.shorten_by_ratio(POWERUP_SHRINK_RATIO)
+                elif pup.kind is PowerupKind.SLOW:
+                    self._slow_until_monotonic = (
+                        time.monotonic() + POWERUP_SLOW_DURATION_S
+                    )
                 continue
             remaining.append(pup)
         self.powerups = remaining
