@@ -32,6 +32,7 @@ git clone https://github.com/RobertFerencsik/uni-software-technology-practice.gi
 Then navigate into the project folder:
 cd uni-software-technology-practice
 
+
 OR
 
 - Manual Download:
@@ -41,6 +42,7 @@ OR
 4. Extract the ZIP file to your preferred location.
 
 - Install the required dependencies:
+
 pip install -r requirements.txt
 
 ### Running the Game
@@ -48,8 +50,11 @@ python main.py
 
 ### Controls
 W, A, S, D - Move the snake (Up, Down, Left, Right)
+
 P - Pause/Unpause the game
+
 R - Restart the game (during play or after Game Over)
+
 ESC - Exit the game
 
 ### Gameplay Features and Power-ups
