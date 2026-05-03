@@ -27,12 +27,13 @@ The project was made in Python with the use of the Pygame library.
 
 ### Installation
 - Clone the Repository:
+
         git clone https://github.com/RobertFerencsik/uni-software-technology-practice.git
 
 Then navigate into the project folder:
+        
         cd uni-software-technology-practice
-
-
+        
 OR
 
 - Manual Download:
@@ -40,6 +41,7 @@ OR
 2. Click the blue "<> Code" button.
 3. Select "Download ZIP".
 4. Extract the ZIP file to your preferred location.
+
 
 - Install the required dependencies:
 
