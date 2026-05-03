@@ -26,7 +26,11 @@ class Game:
         self.grid = self.loader.load_random_map()
 
         self.board = Board(self.grid)
-        self.snake = Snake(start_position=Point(5, 5))
+        
+        # FIX: Nem fix Point(5, 5), hanem keresünk egy szabad helyet
+        start_pos = self._get_random_safe_spawn()
+        self.snake = Snake(start_position=Point(start_pos[0], start_pos[1]))
+        
         self.food = Food()
         self.powerups: list[Powerup] = []
         self._powerup_spawn_timer = 0
@@ -37,6 +41,21 @@ class Game:
         self.paused = False
 
         self._setup_game()
+
+    # Ranfom spawnolas 
+    def _get_random_safe_spawn(self) -> tuple[int, int]:
+        safe_coords = []
+        
+        # Ures cellak megkeresese
+        for y, row in enumerate(self.grid):
+            for x, cell in enumerate(row):
+                if cell == 0:
+                    safe_coords.append((x, y))
+        
+        if not safe_coords:
+            return (1, 1)
+            
+        return random.choice(safe_coords)
 
     def _setup_game(self):
         """

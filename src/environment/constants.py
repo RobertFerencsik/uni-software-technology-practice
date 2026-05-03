@@ -11,7 +11,7 @@ BACKGROUND_COLOR = (0, 0, 0)
 CELL_SIZE = 30
 
 # ennyi lépésenként próbálunk spawnolni egy új poweruppot
-POWERUP_SPAWN_INTERVAL_TICKS = 50
+POWERUP_SPAWN_INTERVAL_TICKS = 100
 
 # max ennyi powerup
 MAX_ACTIVE_POWERUPS = 2
