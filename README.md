@@ -19,17 +19,16 @@ The project was made in Python with the use of the Pygame library.
 - Game Over screen
 - Restart option
 
-## Installing the Game
+## Setup the Game and Execution
 
-### Setup and Execution
-
-#### Prerequisites
+### Prerequisites
 - Python 3.8+
 - pip (Python package manager)
 
-#### Installation
+### Installation
 - Clone the Repository:
 git clone https://github.com/RobertFerencsik/uni-software-technology-practice.git
+
 Then navigate into the project folder:
 cd uni-software-technology-practice
 
@@ -44,7 +43,7 @@ OR
 - Install the required dependencies:
 pip install -r requirements.txt
 
-#### Running the Game
+### Running the Game
 python main.py
 
 ### Controls
