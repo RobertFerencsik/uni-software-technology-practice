@@ -78,6 +78,7 @@ The game attempts to spawn a power-up every 100 ticks. A maximum of 2 power-ups 
 
 ### Testing
 The project uses pytest for unit testing the core logic (movement, collisions, rendering). To run the tests, use:
+            
             pytest
 
 ## Screenshots
