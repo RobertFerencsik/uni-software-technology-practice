@@ -10,13 +10,12 @@ from environment.constants import CELL_SIZE
 from LODZSIK.direction import Direction
 from LODZSIK.game import Game
 from render import draw
-
-# ÚJ IMPORT: Az állapotkezelő és a rajzoló modul
 from ui.overlays import GameState, draw_overlay
 
 LOGIC_FPS = 10
 RENDER_FPS = 60
 MAX_LOGIC_STEPS_PER_FRAME = 5
+FONT_PATH = "assets/NokjaOriginalSmallBold.ttf"
 
 def _logic_step_multiplier(game: Game) -> float:
     fn = getattr(game, "logic_step_multiplier", None)
@@ -46,15 +45,12 @@ def main():
     pygame.init()
     pygame.display.set_caption("Snake")
     clock = pygame.time.Clock()
-    
-    # Betűtípusok inicializálása
-    # A pontszámhoz egy közepes, a feliratokhoz (overlay) a meglévő draw_overlay-t használjuk
-    font_score = pygame.font.SysFont("Arial", 26, bold=True)
+
+    font_score = pygame.font.Font(FONT_PATH, 26)
     
     game = Game()
     state = GameState.MENU
     
-    # ... (időzítő változók: running, logic_accum, stb.) ...
     running = True
     logic_accum = 0.0
     base_logic_step_s = 1.0 / LOGIC_FPS
@@ -62,7 +58,6 @@ def main():
     while running:
         dt = clock.tick(RENDER_FPS) / 1000.0
         
-        # --- 1. ESEMÉNYKEZELÉS (Változatlan) ---
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -89,7 +84,6 @@ def main():
                     elif event.key == pygame.K_m:
                         state = GameState.MENU
 
-        # --- 2. LOGIKA (Változatlan, de figyeli a game_over-t) ---
         if state == GameState.RUNNING:
             logic_accum += dt
             logic_step_s = base_logic_step_s * _logic_step_multiplier(game)
@@ -102,26 +96,20 @@ def main():
                     state = GameState.GAME_OVER
                     break
 
-        # --- 3. MEGJELENÍTÉS ---
         surface = _ensure_surface(game)
         
-        # Alap játékterület (kígyó, kaja, falak)
         draw(surface, game.board, [(p.x, p.y) for p in game.snake.body], 
              game.food.position, getattr(game, "powerups", ()))
-        
-        # ÉLŐ PONTSZÁM KIIRATÁSA (Bal felső sarok)
-        # Sárga színnel (255, 255, 0), hogy elüssön a háttértől
-        score_text = font_score.render(f"Score: {game.score}", True, (255, 255, 0))
-        surface.blit(score_text, (15, 15)) # 15 pixel margó a szélektől
 
-        # Overlay-ek (Menü, Pause, Game Over)
+        score_text = font_score.render(f"Score: {game.score}", True, (255, 255, 255))
+        surface.blit(score_text, (33, 30))
+
         if state == GameState.MENU:
-            draw_overlay(surface, "SNAKE", "Press SPACE to Start")
+            draw_overlay(surface, "SNAKE", "Press SPACE to Start or Q to exit")
         elif state == GameState.PAUSED:
-            draw_overlay(surface, "PAUSED", "Press P to Resume")
+            draw_overlay(surface, "PAUSED", "Press P to Resume or Q to exit")
         elif state == GameState.GAME_OVER:
-            # Itt is a valódi pontot írjuk ki, nem a hosszt!
-            draw_overlay(surface, "GAME OVER", f"Final Score: {game.score} | Press R to Restart")
+            draw_overlay(surface, "GAME OVER", f"Final Score: {game.score} | Press R to Restart or Q to exit")
 
         pygame.display.flip()
 
