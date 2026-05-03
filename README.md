@@ -12,7 +12,6 @@ The project was made in Python with the use of the Pygame library.
 
 - Controllable snake
 - Randomly appearing food
-- Powerups
 - Randomly appearing powerups
 - Score calculation
 - Snake growth after eating food
@@ -20,10 +19,66 @@ The project was made in Python with the use of the Pygame library.
 - Game Over screen
 - Restart option
 
-## Installing the game
+## Installing the Game
+
+### Setup and Execution
+
+#### Prerequisites
+- Python 3.8+
+- pip (Python package manager)
+
+#### Installation
+- Clone the Repository:
+git clone https://github.com/RobertFerencsik/uni-software-technology-practice.git
+Then navigate into the project folder:
+cd uni-software-technology-practice
+
+OR
+
+- Manual Download:
+1. Visit the repository link in your browser.
+2. Click the blue "<> Code" button.
+3. Select "Download ZIP".
+4. Extract the ZIP file to your preferred location.
+
+- Install the required dependencies:
+pip install -r requirements.txt
+
+#### Running the Game
+python main.py
+
+### Controls
+W, A, S, D - Move the snake (Up, Down, Left, Right)
+P - Pause/Unpause the game
+R - Restart the game (during play or after Game Over)
+ESC - Exit the game
+
+### Gameplay Features and Power-ups
+#### Food
+- Color: Red
+- Effect: Increases the snake's length and score.
+- Spawning: Appears at a random empty position on the board.
+
+#### Power-ups
+The game attempts to spawn a power-up every 100 ticks. A maximum of 2 power-ups can be active on the field at once.
+
+- Shorten (Shrink)
+    - Color: Gold/Orange
+    - Effect: Instantly reduces the snake's current length by 30%.
+
+- Slow
+    - Color: Blue
+    - Effect: Slows down the game logic for 10 seconds, making the snake easier to control.
+
+### Testing
+The project uses pytest for unit testing the core logic (movement, collisions, rendering). To run the tests, use:
+    pytest
 
 ## Screenshots
 
 ## Authors
+- Csáki Gergely
+- Ferencsik Róbert
+- Gyöngyösi Dóra Imola
 - Krusó Panna
-- Gyöngyösi Dóra Imolagg
+- Marót Máté
