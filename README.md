@@ -27,10 +27,10 @@ The project was made in Python with the use of the Pygame library.
 
 ### Installation
 - Clone the Repository:
-git clone https://github.com/RobertFerencsik/uni-software-technology-practice.git
+        git clone https://github.com/RobertFerencsik/uni-software-technology-practice.git
 
 Then navigate into the project folder:
-cd uni-software-technology-practice
+        cd uni-software-technology-practice
 
 
 OR
@@ -46,7 +46,7 @@ OR
         pip install -r requirements.txt
 
 ### Running the Game
-python main.py
+        python main.py
 
 ### Controls
 W, A, S, D - Move the snake (Up, Down, Left, Right)
@@ -76,9 +76,16 @@ The game attempts to spawn a power-up every 100 ticks. A maximum of 2 power-ups 
 
 ### Testing
 The project uses pytest for unit testing the core logic (movement, collisions, rendering). To run the tests, use:
-    pytest
+            pytest
 
 ## Screenshots
+
+<img width="1290" height="765" alt="image" src="https://github.com/user-attachments/assets/5c9a0cae-1575-4217-928f-f97e4b701869" />
+
+<img width="1293" height="772" alt="image" src="https://github.com/user-attachments/assets/a4a6cc4c-6ea7-4fb4-964a-6f35e0c26edc" />
+
+<img width="1288" height="764" alt="image" src="https://github.com/user-attachments/assets/2b59ece2-949f-48f9-aa7b-a4a89b2a97a0" />
+
 
 ## Authors
 - Csáki Gergely
