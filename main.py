@@ -1,6 +1,5 @@
 from pathlib import Path
 import sys
-
 import pygame
 
 _src = Path(__file__).resolve().parent / "src"
@@ -12,47 +11,28 @@ from LODZSIK.direction import Direction
 from LODZSIK.game import Game
 from render import draw
 
-# Logikai tick külön ütem: a képernyő gyakrabban frissül, a lépés fix FPS.
+# ÚJ IMPORT: Az állapotkezelő és a rajzoló modul
+from ui.overlays import GameState, draw_overlay
+
 LOGIC_FPS = 10
 RENDER_FPS = 60
-# Egy játékképkockán legfeljebb ennyi logikai lépés (lassú gépen ne egyezzen meg magát).
 MAX_LOGIC_STEPS_PER_FRAME = 5
-
 
 def _logic_step_multiplier(game: Game) -> float:
     fn = getattr(game, "logic_step_multiplier", None)
     return float(fn()) if callable(fn) else 1.0
 
-
 def _window_size(game: Game) -> tuple[int, int]:
-    return (
-        game.board.width * CELL_SIZE,
-        game.board.height * CELL_SIZE,
-    )
-
+    return (game.board.width * CELL_SIZE, game.board.height * CELL_SIZE)
 
 def _ensure_surface(game: Game) -> pygame.Surface:
-    """Ablak méret = pálya × csempe; újraindításkor a pálya mérete változhat."""
     w, h = _window_size(game)
     surf = pygame.display.get_surface()
     if surf is None or surf.get_size() != (w, h):
         return pygame.display.set_mode((w, h))
     return surf
 
-
-def _handle_keydown(game: Game, key: int) -> bool:
-    """
-    Egy gomb kezelése. Visszatérés: False ha a programnak ki kell lépni.
-    """
-    if key in (pygame.K_ESCAPE, pygame.K_q):
-        return False
-    if key == pygame.K_p:
-        game.toggle_pause()
-        return True
-    if key == pygame.K_r:
-        game.restart()
-        return True
-
+def _handle_keydown(game: Game, key: int):
     if key in (pygame.K_UP, pygame.K_w):
         game.snake.change_direction(Direction.UP)
     elif key in (pygame.K_DOWN, pygame.K_s):
@@ -61,54 +41,91 @@ def _handle_keydown(game: Game, key: int) -> bool:
         game.snake.change_direction(Direction.LEFT)
     elif key in (pygame.K_RIGHT, pygame.K_d):
         game.snake.change_direction(Direction.RIGHT)
-    return True
-
 
 def main():
     pygame.init()
     pygame.display.set_caption("Snake")
     clock = pygame.time.Clock()
+    
+    # Betűtípusok inicializálása
+    # A pontszámhoz egy közepes, a feliratokhoz (overlay) a meglévő draw_overlay-t használjuk
+    font_score = pygame.font.SysFont("Arial", 26, bold=True)
+    
     game = Game()
+    state = GameState.MENU
+    
+    # ... (időzítő változók: running, logic_accum, stb.) ...
     running = True
     logic_accum = 0.0
     base_logic_step_s = 1.0 / LOGIC_FPS
 
     while running:
+        dt = clock.tick(RENDER_FPS) / 1000.0
+        
+        # --- 1. ESEMÉNYKEZELÉS (Változatlan) ---
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if not _handle_keydown(game, event.key):
+                if event.key in (pygame.K_ESCAPE, pygame.K_q):
                     running = False
+                
+                if state == GameState.MENU:
+                    if event.key == pygame.K_SPACE:
+                        game.restart()
+                        state = GameState.RUNNING
+                elif state == GameState.RUNNING:
+                    if event.key == pygame.K_p:
+                        state = GameState.PAUSED
+                    else:
+                        _handle_keydown(game, event.key)
+                elif state == GameState.PAUSED:
+                    if event.key == pygame.K_p:
+                        state = GameState.RUNNING
+                elif state == GameState.GAME_OVER:
+                    if event.key == pygame.K_r:
+                        game.restart()
+                        state = GameState.RUNNING
+                    elif event.key == pygame.K_m:
+                        state = GameState.MENU
 
-        dt = clock.tick(RENDER_FPS) / 1000.0
-        logic_accum += dt
-        logic_step_s = base_logic_step_s * _logic_step_multiplier(game)
-        steps = 0
-        while (
-            steps < MAX_LOGIC_STEPS_PER_FRAME
-            and logic_accum >= logic_step_s
-            and not game.game_over
-            and not game.paused
-        ):
-            game.update()
-            logic_accum -= logic_step_s
-            steps += 1
-        if logic_accum > 0.2:
-            logic_accum = 0.2
+        # --- 2. LOGIKA (Változatlan, de figyeli a game_over-t) ---
+        if state == GameState.RUNNING:
+            logic_accum += dt
+            logic_step_s = base_logic_step_s * _logic_step_multiplier(game)
+            steps = 0
+            while steps < MAX_LOGIC_STEPS_PER_FRAME and logic_accum >= logic_step_s:
+                game.update()
+                logic_accum -= logic_step_s
+                steps += 1
+                if game.game_over:
+                    state = GameState.GAME_OVER
+                    break
 
+        # --- 3. MEGJELENÍTÉS ---
         surface = _ensure_surface(game)
-        draw(
-            surface,
-            game.board,
-            [(p.x, p.y) for p in game.snake.body],
-            game.food.position,
-            getattr(game, "powerups", ()),
-        )
-        pygame.display.flip()
-    pygame.quit()
+        
+        # Alap játékterület (kígyó, kaja, falak)
+        draw(surface, game.board, [(p.x, p.y) for p in game.snake.body], 
+             game.food.position, getattr(game, "powerups", ()))
+        
+        # ÉLŐ PONTSZÁM KIIRATÁSA (Bal felső sarok)
+        # Sárga színnel (255, 255, 0), hogy elüssön a háttértől
+        score_text = font_score.render(f"Score: {game.score}", True, (255, 255, 0))
+        surface.blit(score_text, (15, 15)) # 15 pixel margó a szélektől
 
+        # Overlay-ek (Menü, Pause, Game Over)
+        if state == GameState.MENU:
+            draw_overlay(surface, "SNAKE", "Press SPACE to Start")
+        elif state == GameState.PAUSED:
+            draw_overlay(surface, "PAUSED", "Press P to Resume")
+        elif state == GameState.GAME_OVER:
+            # Itt is a valódi pontot írjuk ki, nem a hosszt!
+            draw_overlay(surface, "GAME OVER", f"Final Score: {game.score} | Press R to Restart")
+
+        pygame.display.flip()
+
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
-    
