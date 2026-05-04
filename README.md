@@ -69,7 +69,7 @@ ESC - Exit the game
 The game attempts to spawn a power-up every 100 ticks. A maximum of 2 power-ups can be active on the field at once.
 
 - Shorten (Shrink)
-    - Color: Gold/Orange
+    - Color: Yellow
     - Effect: Instantly reduces the snake's current length by 30%.
 
 - Slow
@@ -87,6 +87,7 @@ The project uses pytest for unit testing the core logic (movement, collisions, r
 
 
 <img width="1295" height="769" alt="image" src="https://github.com/user-attachments/assets/075a98c2-de67-469d-a17e-c4fb3c15b7ac" />
+
 
 <img width="1295" height="766" alt="image" src="https://github.com/user-attachments/assets/5196af84-c3bf-4a7c-833f-7eb62dc6d9b5" />
 
