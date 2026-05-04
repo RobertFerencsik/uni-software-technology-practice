@@ -83,11 +83,12 @@ The project uses pytest for unit testing the core logic (movement, collisions, r
 
 ## Screenshots
 
-<img width="1290" height="765" alt="image" src="https://github.com/user-attachments/assets/5c9a0cae-1575-4217-928f-f97e4b701869" />
+<img width="1292" height="771" alt="image" src="https://github.com/user-attachments/assets/23b9e616-a042-4951-a536-d0f663a332ab" />
 
-<img width="1293" height="772" alt="image" src="https://github.com/user-attachments/assets/a4a6cc4c-6ea7-4fb4-964a-6f35e0c26edc" />
 
-<img width="1288" height="764" alt="image" src="https://github.com/user-attachments/assets/2b59ece2-949f-48f9-aa7b-a4a89b2a97a0" />
+<img width="1295" height="769" alt="image" src="https://github.com/user-attachments/assets/075a98c2-de67-469d-a17e-c4fb3c15b7ac" />
+
+<img width="1295" height="766" alt="image" src="https://github.com/user-attachments/assets/5196af84-c3bf-4a7c-833f-7eb62dc6d9b5" />
 
 
 ## Authors
